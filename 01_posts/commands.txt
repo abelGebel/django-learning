@@ -1,0 +1,193 @@
+****************************************************************************************************************
+PRIMERA CLASE
+
+1. python -m venv venv
+
+seleccionar interprete
+
+3. pip install django==4.2
+4. pip freeze
+
+Model template wiev 
+model --> BD
+template --> vizualizacion (htmls)
+wiev --> controlador (comunicacion entre el usuario y la base de datos y la renderizacion) 
+
+5. django-admin startproject mysite
+el proyecto viene con cierta arquitectura
+
+manage.py:
+Linea de comandos que utilizamos para la creacion de aplicaciones, interactuar con el servidor web, etc
+
+settings.py
+Todas las configuraciones de nuestro servidor web. Configuramos las app que esten abiertas, conexcion a BD, 
+si estamos en modo debug, templates, etc.
+Toda la parte de la configuracion de nuestro servidor: lenguaje de codificacion, zona horaria, etc
+
+DEBUG = True --> Nos indica si nuestro proyecto esta en producción o en fase de desarrollo (True-->desarrollo).
+ALLOWED_HOSTS = [] --> permitir los tipos de ipes pueden acceder a la web
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    ...
+]
+componentes de nuestro sitio: un carrito, una wiki
+
+STATIC_URL = 'static/' --> componentes estaticos de la pagina
+
+urls.ppy:
+Definimos los path a los que los usuarios pueden acceder y djano los va a redireccionar.
+
+6. python manage.py migrate
+ddjango por defecto viene con ciertas aplicaciones ya configuradas
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+BD por defecto(la que se crea al principio), se debe cambiar para poder usar otra BD.
+
+7. python manage.py runserver
+
+8. python manage.py startapp blog
+crear apliaciones (componentes del sitio web)
+blog es un modulo
+compnentes de una aplicacion:
+
+admin --> registrar nuestros modelos para administrarlos en una interfaz
+
+models --> definimos las tablas de nuestra BD, en un formato de clases. Aplicacmos las migraciones y django 
+convierte las clases que creemos ahi a un formato de tablas.
+
+views --> a donde llegan las solicitudes desde urls. (Controlador)
+
+9. Creamos un modelo en models.py. (crear una tabla en nuestra BD)
+
+Class Post(...):
+    ...
+    ...
+    ...
+
+10. Agregamos la aplicacion a settings.py
+INSTALLED_APPS = [
+    ...
+    'blog.apps.BlogConfig' # accedo a la carpeta blog, al archibo apps y dentro a BlogConfig (activar aplicaciones)
+]
+
+11 .python manage.py makemigrations blog
+aplicamos las migraciones
+
+python esta precreando la sentencia que debe implementar en la BD, queda guardada en blog\migrations\0001_initial.py
+
+como podemos saber que sentencia SQL va a crear django para interactuar con nuestra BD? --> python 
+
+12. Una vez visto el codigo, hacemos que python lo migre --> python manage.py migrate
+Abrimos el explorador de BD para ver que efectivamente se ha creado la tabla
+
+
+****************************************************************************************************************
+
+SEGUNDA CLASE
+
+13. Crear el superusuario: python manage.py createsuperuser
+username: abelg
+email: abelgebel@gmail.com
+passwrord: blink182
+
+el modulo que nos permite trabajar con esta parte de la adm de django es 'django.contrib.admin' que se encuentra
+en settings.py en INSTALLED_APPS
+'django.contrib.auth' genera la autentificacion por nosotros
+
+14. Como hacemos para adiministrar desde el modulo de django la aplicacion que creamos?
+En admin.py importamos los modelos:
+from .models import Post
+
+admin.site.register(Post)
+(luego volver a cargar el servidor)
+
+15. Se pueden añadir decoradores al modulo de administracion
+
+@admin.register(Post) 
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['title', 'slug', 'author', 'publish', 'status']
+    ...
+
+16. Crear un objeto de manera manual a traves del shell de django:
+
+python manage.py shell --> para interactuar con las clases y ver como funcionarian en un ambiente real
+
+>>>from django.contrib.auth.models import User
+>>>from blog.models import Post 
+>>>user = User.objects.get(username='abelg')
+
+Podemos crar objetos:
+>>>post = Post(title='Another post',slug='another-post',body='Post body.',author=user)
+esta en memoria pero no en la BD:
+>>>post.save()
+
+Otra forma (no hace falta post.save()):
+>>>Post.objects.create(title='One more post',
+                    slug='one-more-post',
+                    body='Post body.',2
+                    author=user)
+
+Hacer un select:
+>>>all_posts = Post.objects.all()
+>>>all_posts
+<QuerySet [<Post: One more post>, <Post: Another post>, <Post: Aprendiendo Python>, <Post: Aprendiendo Django>]>
+
+Aplicar filtros
+>>> Post.objects.filter(publish__year=2024)
+<QuerySet [<Post: One more post>, <Post: Another post>, <Post: Aprendiendo Python>, <Post: Aprendiendo Django>]>
+>>> Post.objects.filter(author__username='abelg')
+
+borrar:
+>>> post_1 = Post.objects.get(id=1)
+>>> post_1.delete()
+
+Post.objects es el que maneja las sentencias sql (manage)
+
+17. Creamos un manager y lo definimos dentro de nuestro modelo en models.py class PublishedManager(models.Manager):...                                                     
+
+18. Creamos nuestra primer view.
+
+en views.py importamos el modelo Post y creamos la vista def post_list(request):...
+
+19. Crear la url.
+
+Creamos un archivo url.py en blog y creamos los path
+
+Una vez definida la url dentro de la aplicacion, queda definirla dentro del sitio principal en urls.py.
+path('blog/', include('blog.urls', namespace='blog')),
+
+20. Crear templates. --> Mostrar los datos.
+modelo-vista-template 
+
+Creamos la carpeta templates en blog.
+Dentro de templates creamos la carpeta blog.
+Dentro de templates/blog creamos el archivo base.html
+Dentro de templates/blog creamos la carpeta post y dentro creamos los archivos list.html y detail.html
+
+Agregamos contenio html al archivo base.
+Creamos la carpeta static en blog y dentro la carpeta css. Dentro creamos el archivo blog.css
+
+Instanciar todos los posts 
+
+Agregamos contenio html al archivo list.html y detail.html.
+
+*************************************************************************************************************
+
+TERCERA CLASE
+
+21. URL canonica
+Importamos reverse en models.py y agregamos una funcion al fianal: get_absolute_url():
+Con este metodo a cada objeto se le asigna una url
+
+remplazamos <a href="{% url 'blog:post_detail' post.id %}"> por <a href="{% post.get_absolute_url %}"> 
+en list.html
+
+
+
+
