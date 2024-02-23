@@ -190,4 +190,62 @@ en list.html
 
 
 
+22. Creamos una url friendly a partir del slug (cada slug debe ser unico ya que no pueden existir urls repetidas)
 
+Aplicamos las migraciones: python manage.py makemigrations blog y python manage.py migrate
+
+23. modifimaos los patrones de url para usar esas url friendly
+modificamos urls.py y views.py
+
+lanzamos el servidor para verificar los cambios
+
+
+24. Paginacion
+en views.py importamos el objeto paginator y modificamos la vista Post
+
+def post_list(request):    
+    post_list = Post.published.all()     
+    paginator = Paginator(post_list,4)
+    page_number = request.GET.get('page', 1)
+    posts = paginator.page(page_number)
+    return render(request,     
+                    'blog/post/list.html',
+                    {'posts':posts}) 
+
+creamos el html pagination y llamamos ese componente desde list.html
+
+
+25. Manejo de errores
+Cuando se esta en prodciion, no deben mostrarse el detalle de los errores ya que contienen mucha informacion.
+Si coloco la url http://127.0.0.1:8000/blog/?page=44 debe dar un error de paginacion
+y con http://127.0.0.1:8000/blog/?page=dfsdlfjfds dara un error de tipo de dato
+importamos from django.core.paginator import EmptyPage y agregamos la exepcion a la vista post_list
+
+
+26. En lugar de mostrar la lista de los posts mediante una vista basada en funciones, lo hacemos basada en clases
+implementamos los cambios en la url
+path('', views.PostListView.as_view(), name='post_list'),
+
+modificar la paginacion en list.html {% include "pagination.html" with page=page_obj %}
+
+
+27. Formularios
+Dos formas:
+    clase forms <--
+    clase model form
+
+creamos form.py en la carpeta blog y creamos la clase EmailPostForm con los atributos
+creamos la vista del formulario en views.py
+importamos from .forms import EmailPostForm 
+creamos la vista basada en funciones post_share
+
+28. En settings especificamos todas la variables que se van a utilizara para nuestra configuracion de correo en python
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'my_account@gmail.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+configuracion para conectarnos con gmail
+
+-------------VER COMO ENVIAR CORREOS CON PYTHON-------------

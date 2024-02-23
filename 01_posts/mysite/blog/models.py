@@ -15,7 +15,9 @@ class Post(models.Model):
         DRAFT = 'DF', 'Draft' # (Borrrador)
         PUBLISHED = 'PB', 'Published' # (Publicado)
     title = models.CharField(max_length = 250)
-    slug = models.SlugField(max_length = 250) # Facilita busquedas.
+    slug = models.SlugField(max_length = 250,        # Facilita busquedas.
+                            unique_for_date='publish') # Añadimos una restrisccion para que el slug sea unico por fecha
+    
     author = models.ForeignKey(User, # Tabla de autores, un autor tiene muchos posts... (esto ya viene incluido en django)
                                on_delete=models.CASCADE, # Si elimino el usuario Abel, todos sus posts se van a eliminar
                                related_name='blog_posts')
@@ -43,4 +45,9 @@ class Post(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('blog:post_detail',args=[self.id])
+        return reverse('blog:post_detail', args=[self.publish.year,
+                                                 self.publish.month,
+                                                 self.publish.day,
+                                                 self.slug])
+        #return reverse('blog:post_detail',args=[self.id])
+    # Sin el reverse seria /blog/n=1,2,3,4,... ahora se veria /blog/2024/1/1/inttroduccion-a-django --> (slug)

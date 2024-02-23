@@ -4,8 +4,10 @@ from . import views
 app_name = 'blog'
 urlpatterns = [
     # post views
-    path('', views.post_list, name='post_list'),
-    path('<int:id>/', views.post_detail, name='post_detail'),
+    #path('', views.post_list, name='post_list'), basada en funciones
+    path('', views.PostListView.as_view(), name='post_list'),
+    path('<int:year>/<int:month>/<int:day>/<slug:post>/', views.post_detail, name='post_detail'),
+    #path('<int:id>/', views.post_detail, name='post_detail'),
 ]
 
 # https://localhost:8000/blog/ el usuario al digitar esta url cae en la condicion path('', ...) y mostrala la lista de los posts
