@@ -1,0 +1,10 @@
+{% if 'Actualizado' in request.GET %}
+<div class="alert alert-success" role="alert">
+    Modificación Exitosa
+  </div>	
+{% endif %}
+{% if 'Eliminado' in request.GET %}
+<div class="alert alert-danger" role="alert">
+    Eliminación Exitosa
+</div>	
+{% endif %}

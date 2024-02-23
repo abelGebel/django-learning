@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block tittle %} Inicio {% endblock %}
+
+{% block content %}
+
+    <!-- Barra de navegación 
+    
+    
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Tienda de Discos</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Productos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contacto</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  -->
+
+  <!-- Contenido de la página -->
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Bienvenido a nuestra tienda de discos</h1>
+        <p>Encuentra los mejores discos de tus artistas favoritos.</p>
+        <a href="#" class="btn btn-primary">Ver productos</a>
+      </div>
+      <div class="col-md-6">
+
+
+        <div class="container-fluid">
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://i0.wp.com/ksuradio.com/wp-content/uploads/2021/09/354F15C3-C712-4DC8-A86F-08C6AC4E1FD2.webp" style="width: 500px; height: 500px;" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://image.europafm.com/clipping/cmsimages02/2022/05/19/A530D010-CBD6-4C77-A783-CDC272FA1886/cantante-metallica-rompe-sentia-que-estaba-viejo-podia-tocar-mas_98.jpg?crop=3603,2027,x0,y0&width=1900&height=1069&optimize=low&format=webply" class="d-block w-100 h-auto" style="width: 500px; height: 500px;" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://static.topshelfmusicmag.com/20220505131718/OffspringTSM-8172.jpg" class="d-block" style="width: 500px; height: 500px;" alt="...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--<img src="https://via.placeholder.com/500" alt="Tienda de discos" class="img-fluid"> -->
+
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

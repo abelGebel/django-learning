@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% block tittle %} Contacto {% endblock %}
+
+{% block content %}
+
+        <!-- Contenido de la página -->
+        <div class="container mt-5">
+            <h1>Contacto</h1>
+            <p>¡Visítanos en nuestra tienda de discos!</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Horarios</h2>
+                    <p>Lunes a Viernes: 10:00 am - 8:00 pm</p>
+                    <p>Sábados y Domingos: 12:00 pm - 6:00 pm</p>
+                    <h2>Dirección</h2>
+                    <p>Calle Ficticia #123, Colonia Ficticia, Ciudad Ficticia</p>
+                    <h2>Datos de contacto</h2>
+                    <p>Teléfono: (123) 456-7890</p>
+                    <p>Email: info@tiendadediscos.com</p>
+                </div>
+                <div class="col-md-6">
+                    <h2>Imágenes de la tienda</h2>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="https://raw.githubusercontent.com/abelGebel/ejemplo-django-01/main/media/discos/ixnay-on-the-hombre-5.jpg" alt="Imagen de la tienda" class="img-fluid mb-3">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="https://static.topshelfmusicmag.com/20220505131718/OffspringTSM-8172.jpg" alt="Imagen de la tienda" class="img-fluid mb-3">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="https://via.placeholder.com/150" alt="Imagen de la tienda" class="img-fluid mb-3">
+                        </div>
+                    </div>
+                    <h2>Encuéntranos en el mapa</h2>
+                    <div id="map"></div>
+                    <div class="map" id="contact">
+                        <iframe src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
+                        <br />
+                        <small><a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a></small>
+                    </div>
+                </div>
+            </div>
+             <!-- Map-->
+
+        </div>
+    
+        <!-- Agrega el script de JavaScript para el mapa de Google -->
+
+
+{% endblock %}
