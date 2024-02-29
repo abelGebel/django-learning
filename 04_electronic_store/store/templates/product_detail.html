@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+<div class="row row-cols-1 row-cols-md-2 g-2">
+    <div class="col">
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.nombre }}" height="auto">
+    </div>
+
+    <div class="col">
+        <h2>{{ product.name }}</h2>
+        <h3>${{ product.price }}</h3>
+        <h5>{{ product.description }}</h5>
+        
+    </div>
+</div>
+
+
+
+{% endblock %}
