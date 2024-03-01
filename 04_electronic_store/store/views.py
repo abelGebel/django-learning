@@ -1,5 +1,5 @@
 from os import name
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Product
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -12,8 +12,9 @@ def contact(request):
     return render(request, 'contact.html')
 
 def products(request):
-    products = Product.objects.all()
-    paginator = Paginator(products, 8)
+    #products = Product.objects.all()
+    products = Product.objects.filter(stock__gt=0)
+    paginator = Paginator(products, 3)
     page = request.GET.get('page')
     try:
         products = paginator.page(page)
@@ -31,3 +32,11 @@ def search(request):
 def product_detail(request, product_id):
     product = Product.objects.get(id=product_id)
     return render(request, 'product_detail.html', {'product': product})
+
+
+def comprar_producto(request, producto_id):
+    producto = get_object_or_404(Product, id=producto_id)
+    if producto.stock > 0:
+        producto.stock -= 1
+        producto.save()
+    return products(request)

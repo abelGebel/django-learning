@@ -15,7 +15,16 @@
         <h2>{{ product.name }}</h2>
         <h3>${{ product.price }}</h3>
         <h5>{{ product.description }}</h5>
-        
+        <p>Stock disponible: {{ product.stock }}</p>
+
+        {% if product.stock > 0 %}
+            <form action="{% url 'comprar_producto' product.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Comprar</button>
+            </form>
+        {% else %}
+            <p>Este producto está agotado.</p>
+        {% endif %}        
     </div>
 </div>
 
