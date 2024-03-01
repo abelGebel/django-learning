@@ -10,6 +10,7 @@ class Product(models.Model):
     price = models.FloatField()
     description = models.TextField(default="")
     stock = models.IntegerField(default = 1)
+    in_offer = models.BooleanField(default=False)
     image = models.ImageField(verbose_name="imagen del producto", upload_to="media/products")
 
     def __str__(self):

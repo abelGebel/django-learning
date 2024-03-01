@@ -1,12 +1,21 @@
-from os import name
+import django
 from django.shortcuts import get_object_or_404, redirect, render
+from mysite import settings
 from .models import Product
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.contrib import messages
+#from captcha.client import captcha
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 
 def home(request):
-    return render(request, 'home.html')
+    productos_oferta = Product.objects.filter(in_offer=True)
+    return render(request, 'home.html', {'productos_oferta': productos_oferta})
+
+
 
 def contact(request):
     return render(request, 'contact.html')
@@ -14,7 +23,7 @@ def contact(request):
 def products(request):
     #products = Product.objects.all()
     products = Product.objects.filter(stock__gt=0)
-    paginator = Paginator(products, 3)
+    paginator = Paginator(products, 8)
     page = request.GET.get('page')
     try:
         products = paginator.page(page)
@@ -40,3 +49,35 @@ def comprar_producto(request, producto_id):
         producto.stock -= 1
         producto.save()
     return products(request)
+
+
+def enviar_email(request):
+    if request.method =="POST":
+        name = request.POST["nombre"]
+        email = request.POST["email"]
+        subject = request.POST["subject"]
+        message = request.POST["mensaje"]
+
+        template = render_to_string('email_template.html', {
+            'name': name,
+            'email': email,
+            'message': message
+        })
+
+        # Verifica el captcha
+        #captcha_response = request.POST.get('g-recaptcha-response', '')
+        #if not captcha.verify(settings.RECAPTCHA_SECRET_KEY, captcha_response, remote_ip=request.META['REMOTE_ADDR']):
+        #    raise ValidationError('Captcha inválido')
+
+        email = EmailMessage(
+            subject,
+            template,
+            settings.EMAIL_HOST_USER,
+            ['abelgebel@gmail.com']
+        )
+        
+        email.fail_silently = False
+        email.send()
+
+        messages.success(request, 'El correo se ha enviado correctamente. ')
+        return redirect('contact')

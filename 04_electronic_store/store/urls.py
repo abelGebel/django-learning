@@ -9,7 +9,7 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
     path('product/<int:producto_id>/comprar/', views.comprar_producto, name='comprar_producto'),
-
+    path('enviar_email/', views.enviar_email, name='enviar_email'),
 ]
 
 # Configuracion extendida para mostrar las imagenes en modo debug

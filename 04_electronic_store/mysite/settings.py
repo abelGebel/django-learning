@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
+    #'captcha',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +130,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files
 MEDIA_URL = ''
 MEDIA_ROOT = os.path.join(BASE_DIR,"")
+
+# Email
+load_dotenv()
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('USER')
+EMAIL_HOST_PASSWORD = os.getenv('PASS')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+RECAPTCHA_PUBLIC_KEY = '6LeWm4YpAAAAACcWvZqBkniXz6u0GfTcxNcWGiQy'
+RECAPTCHA_PRIVATE_KEY = '6LeWm4YpAAAAAKqrV8wAc6cldpcKTPYbW7lzcl1v'
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
